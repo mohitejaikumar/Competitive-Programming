@@ -80,16 +80,13 @@ public:
             return;
         }
         // add smaller to larger
-        if (size[par_ult_u] < size[par_ult_v])
-        {
+        if(size[par_ult_u]>size[par_ult_v]){
+             swap(par_ult_v,par_ult_u);
+         }
+       
             parent[par_ult_u] = par_ult_v;
             size[par_ult_v] += size[par_ult_u];
-        }
-        else
-        {
-            parent[par_ult_v] = par_ult_u;
-            size[par_ult_u] += size[par_ult_v];
-        }
+            size[par_ult_u]=0;
 
         return;
     }
