@@ -608,7 +608,7 @@ public:
                 ll weight = it.s;
                 if (!Vis[neigh])
                 {
-                    pq.push({weight, {neigh, node}});
+                    pq.push({weight+wt, {neigh, node}});
                 }
             }
         }
