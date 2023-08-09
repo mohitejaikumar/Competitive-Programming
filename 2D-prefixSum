@@ -1,0 +1,38 @@
+bool check_mid(ll mid)
+{
+    vector<vector<ll>> pref(n + 1, vll(m + 1, 0));
+    vector<vector<ll>> b(n + 1, vll(m + 1, 0));
+    rep(i, 0, n)
+    {
+        rep(j, 0, m)
+        {
+            if (a[i][j] >= mid)
+            {
+                b[i][j] = 1;
+            }
+        }
+    }
+
+    rep(i, 0, n)
+    {
+        rep(j, 0, m)
+        {
+
+            pref[i + 1][j + 1] = pref[i][j + 1] + pref[i + 1][j] - pref[i][j] + b[i][j];
+        }
+    }
+
+    rep(i, mid, n + 1)
+    {
+        rep(j, mid, m + 1)
+        {
+            ll x = pref[i][j] - pref[i - mid][j] - pref[i][j - mid] + pref[i - mid][j - mid];
+            if (x == mid * mid)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
