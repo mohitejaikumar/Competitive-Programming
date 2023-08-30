@@ -26,9 +26,9 @@ public:
     vll rank, size, parent;
     DisjointSet(ll n)
     {
-        rank.resize(n + 1, 0);
-        size.resize(n + 1, 1);
-        parent.resize(n + 1, 0);
+        rank.assign(n + 1, 0);
+        size.assign(n + 1, 1);
+        parent.assign(n + 1, 0);
         rep(i, 0, n + 1)
         {
             parent[i] = i;
@@ -97,20 +97,20 @@ class Graph
 public:
     Graph(ll n)
     {
-        par.resize(n + 1, 0);
-        dis.resize(n + 1, 1e9);
-        vis.resize(n + 1, 0);
-        adj.resize(n + 1);
-        adj_w.resize(n + 1);
-        indegree.resize(n + 1);
+        par.assign(n + 1, 0);
+        dis.assign(n + 1, 1e9);
+        vis.assign(n + 1, 0);
+        adj.assign(n + 1,{});
+        adj_w.assign(n + 1,{});
+        indegree.assign(n + 1,0);
 
         // SCC's
-        adjT.resize(n + 1);
+        adjT.assign(n + 1,{});
 
         // bridges and Articulation
-        tin.resize(n + 1, 0);
-        lowIn.resize(n + 1, 0);
-        articuNode.resize(n + 1, 0);
+        tin.assign(n + 1, 0);
+        lowIn.assign(n + 1, 0);
+        articuNode.assign(n + 1, 0);
         return;
     }
     void addEdge(ll x, ll y)
