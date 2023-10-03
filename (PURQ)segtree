@@ -12,6 +12,7 @@ void build(ll ind, ll l, ll r)
     {   
         // leaft update 
         segt[ind] = node(val[l]);
+        return;
     }
     ll mid = l + (r - l) / 2;
     build(ind * 2, l, mid);
