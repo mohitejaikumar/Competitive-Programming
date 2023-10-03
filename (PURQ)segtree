@@ -34,8 +34,8 @@ void update(ll ind, ll l, ll r, ll pos, ll value)
         return;
     }
     ll mid = l + (r - l) / 2;
-    update(ind, l, mid, pos, value);
-    update(ind, mid + 1, r, pos, value);
+    update(ind*2, l, mid, pos, value);
+    update(ind*2+1, mid + 1, r, pos, value);
     segt[ind] = merge(segt[2 * ind], segt[2 * ind + 1]);
     return;
 }
