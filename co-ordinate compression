@@ -1,0 +1,19 @@
+vector<ll> compressed_Vector(vll v){
+    // all num>=1 
+    ll n=v.size();
+    set<ll> st;
+    rep(i,0,n){
+        st.insert(v[i]);
+    }
+    mll mp;
+    ll ctr=1;
+    for(auto it:st){
+        mp[it]=ctr;
+        ctr++;
+    }
+    rep(i,0,n){
+        v[i]=mp[v[i]];
+    }
+
+    return v;
+}
