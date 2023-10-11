@@ -1,0 +1,54 @@
+
+// size same as n and it it strictly 1-based index
+ll fen[100005];
+// log(n)
+void update(ll ind, ll val, ll n)
+{
+
+    while (ind <= n)
+    {
+        fen[ind] += val;
+        ind = ind + (ind & ~ind);
+    }
+}
+// (1,ind)
+// log(n)
+ll query(ll ind)
+{
+    ll s = 0;
+    while (ind > 0)
+    {
+        s += fen[ind];
+        ind = ind - (ind & ~ind);
+    }
+    return s;
+}
+
+/*---------------------------------TEMPLATE  ENDS --------------------------------------------------------------------------------------*/
+void solve()
+{   
+    ll n,q;
+    cin>>n>>q;
+    vll v(n+1,0);
+    rep(i,1,n+1){
+        cin>>v[i];
+        update(i,v[i],n);
+    }
+    while(q--){
+        ll type;
+        cin>>type;
+        if(type==1){
+            ll ind ,val;
+            cin>>ind>>val;
+            update(ind,val,n);
+
+        }
+        else{
+            ll l,r;
+            cin>>l>>r;
+            cout<<query(r)-query(l-1)<<endl;
+
+        }
+    }
+    return;
+}
