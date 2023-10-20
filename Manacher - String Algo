@@ -1,0 +1,58 @@
+struct manacher{
+      vll p;
+      
+      void run_manacher(string &s){
+
+        // cout<<s<<endl;
+        ll n=s.size();
+        p.assign(n,1);
+
+        ll l=1,r=1; // l and r are exclusive  |   s[0]=='#' so p[0]=1
+        rep(i,1,n){
+            // r-i is distance from right it should not exceed and l+ dis(i,r)----> index to be copied 
+            p[i]=max(0ll,min(r-i,p[l+r-i]));
+            
+            // times whenever this while loop runs r gets updated to find max strectch 
+            while(i+p[i]<n && i-p[i]>=0 && s[i+p[i]]==s[i-p[i]]){
+                p[i]++;
+            }
+
+            if(i+p[i]>r){
+                l = i-p[i];
+                r = i+p[i];
+            }
+
+        }
+        // for(auto it:p){
+        //     cout<<it<<" ";
+        // }
+        // cout<<endl;
+      }
+      
+      void build(string &s){
+
+        string t="";
+        ll n = s.size();
+
+        rep(i,0,n){
+            t+=string("#")+s[i];
+        }
+        t+=string("#");
+
+        run_manacher(t);
+
+      }
+
+      ll get_longest(ll cen , bool odd){
+             ll pos = 2*cen + 1 + !(odd);
+             return p[pos]-1;
+      }
+
+      bool check_palindrom(ll l, ll r){
+             ll cen = (l+r)/2;
+             if(r-l+1<=get_longest(cen , (l%2==r%2))){
+                return true;
+             }
+             return false;
+      }
+};
