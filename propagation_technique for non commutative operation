@@ -1,0 +1,98 @@
+ 
+struct node
+{
+   ll operation;
+   node(ll val = 1e18)
+   {
+      operation = val;
+   }
+};
+vector<node> segt;
+ 
+ 
+node merge(node &a, node b)
+{
+   // merge update and initialize
+   if (b.operation == 1e18)
+   {
+      return a;
+   }
+   return b;
+}
+ 
+void propagate(ll ind, ll lq, ll rq)
+{
+   if (lq == rq)
+      return;
+   segt[2 * ind] = merge(segt[2 * ind], segt[ind]);
+   segt[2 * ind + 1] = merge(segt[2 * ind + 1], segt[ind]);
+   segt[ind]= node();
+   return;
+}
+ 
+void update(ll ind, ll l, ll r, ll lq, ll rq, ll value)
+{
+   propagate(ind, l, r);
+   if (lq > r || rq < l)
+   {
+      return;
+   }
+   if (l >= lq && r <= rq)
+   {
+      segt[ind] = merge(segt[ind], node(value));
+      return;
+   }
+   ll mid = l + (r - l) / 2;
+   update(ind * 2, l, mid, lq, rq, value);
+   update(ind * 2 + 1, mid + 1, r, lq, rq, value);
+ 
+   return;
+}
+node query(ll ind, ll l, ll r, ll pos)
+{
+   propagate(ind, l, r);
+   if (l == r)
+   {
+      // leaf update
+      return segt[ind];
+   }
+   node res;
+   ll mid = l + (r - l) / 2;
+   if (mid >= pos)
+   {
+      res = query(ind * 2, l, mid, pos);
+   }
+   else
+   {
+      res = query(ind * 2 + 1, mid + 1, r, pos);
+   }
+ 
+   return merge(res, segt[ind]);
+}
+/*---------------------------------TEMPLATE  ENDS --------------------------------------------------------------------------------------*/
+void solve()
+{
+   ll n, m;
+   cin >> n >> m;
+   segt.assign(4 * n + 10, node(0ll));
+   while (m--)
+   {
+      ll type;
+      cin >> type;
+      if (type == 1)
+      {
+         ll l, r, v;
+         cin >> l >> r >> v;
+         r--;
+         update(1, 0, n - 1, l, r, v);
+      }
+      else
+      {
+         ll pos;
+         cin >> pos;
+         node ans = query(1, 0, n - 1, pos);
+         cout << ans.operation << endl;
+      }
+   }
+   return;
+}
