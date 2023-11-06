@@ -1,0 +1,110 @@
+struct node
+{
+    ll operation;
+    ll sum;
+    node(ll val = 1, ll m = 1)
+    {
+        operation = val;
+        sum = m;
+    }
+};
+vector<node> segt;
+
+ll modify_op(ll a, ll b){
+    return (a*b)%M;
+}
+ll calc_op(node &a , node &b){
+    return (a.sum+b.sum)%M;
+}
+void apply_op(node &a , ll value){
+     a.operation = modify_op(a.operation,value);
+     a.sum = modify_op(a.sum,value);
+     return;
+
+}
+void build(ll ind,ll l,ll r){
+    if(l==r){
+        segt[ind] = node(1,1);
+        return;
+    }
+    ll mid=(l+r)/2;
+    build(2*ind,l,mid);
+    build(2*ind+1,mid+1,r);
+    // calc_operation
+    segt[ind].sum = calc_op(segt[2*ind],segt[2*ind+1]);
+}
+void update(ll ind, ll l, ll r, ll lq, ll rq, ll value)
+{
+
+    if (lq > r || rq < l)
+    {
+        return;
+    }
+    if (l >= lq && r <= rq)
+    {  
+        apply_op(segt[ind], value);
+        return;
+    }
+    ll mid = l + (r - l) / 2;
+    update(ind * 2, l, mid, lq, rq, value);
+    update(ind * 2 + 1, mid + 1, r, lq, rq, value);
+    //cal_operation
+    node temp;
+    temp.sum = calc_op(segt[2 * ind], segt[2 * ind + 1]);
+    //modify_operation
+    apply_op(temp ,segt[ind].operation);
+    segt[ind]=temp;
+
+    return;
+}
+node query(ll ind, ll l, ll r, ll lq, ll rq)
+{
+
+    if (lq > r || rq < l)
+    {
+        return node(1,0);
+    }
+    if (l >= lq && r <= rq)
+    {
+
+        return segt[ind];
+    }
+    ll mid = l + (r - l) / 2;
+    node left = query(ind * 2, l, mid, lq, rq);
+    node right = query(ind * 2 + 1, mid + 1, r, lq, rq);
+    // calc_op
+    node temp;
+    temp.sum = calc_op(left,right);
+    // modify_op
+    apply_op(temp,segt[ind].operation);
+    return temp;
+}
+/*---------------------------------TEMPLATE  ENDS --------------------------------------------------------------------------------------*/
+void solve()
+{
+    ll n, m;
+    cin >> n >> m;
+    segt.assign(4 * n + 10, node());
+    build(1,0,n-1);
+    while (m--)
+    {
+        ll type;
+        cin >> type;
+        if (type == 1)
+        {
+            ll l, r, v;
+            cin >> l >> r >> v;
+            r--;
+            update(1, 0, n - 1, l, r, v);
+        }
+        else
+        {
+            ll l, r;
+            cin >> l >> r;
+            r--;
+            node ans = query(1, 0, n - 1, l, r);
+            cout << ans.sum << endl;
+        }
+    }
+    return;
+}
