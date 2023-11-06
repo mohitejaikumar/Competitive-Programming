@@ -2,6 +2,7 @@ struct node
 {
     ll operation;
     ll sum;
+// initialise with neutral
     node(ll val = 1, ll m = 1)
     {
         operation = val;
@@ -61,7 +62,8 @@ node query(ll ind, ll l, ll r, ll lq, ll rq)
 {
 
     if (lq > r || rq < l)
-    {
+    {   
+       // neutral 
         return node(1,0);
     }
     if (l >= lq && r <= rq)
