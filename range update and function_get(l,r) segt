@@ -2,7 +2,6 @@ struct node
 {
     ll operation;
     ll sum;
-// initialise with neutral
     node(ll val = 1, ll m = 1)
     {
         operation = val;
@@ -11,15 +10,16 @@ struct node
 };
 vector<node> segt;
 
-ll modify_op(ll a, ll b){
-    return (a*b)%M;
+node modify_op(node a, ll val){
+     a.operation = (a.operation*value)%M;
+     a.sum = (a.sum*value)%M;
+    return a;
 }
 ll calc_op(node &a , node &b){
     return (a.sum+b.sum)%M;
 }
 void apply_op(node &a , ll value){
-     a.operation = modify_op(a.operation,value);
-     a.sum = modify_op(a.sum,value);
+     a=modify_op(a,value);
      return;
 
 }
@@ -64,7 +64,7 @@ node query(ll ind, ll l, ll r, ll lq, ll rq)
     if (lq > r || rq < l)
     {   
        // neutral 
-        return node();
+        return node(1,0);
     }
     if (l >= lq && r <= rq)
     {
