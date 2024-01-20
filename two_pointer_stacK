@@ -1,0 +1,82 @@
+struct custom_stack
+{
+    vector<ll> s, smin = {LLONG_MAX}, smax = {LLONG_MIN};
+
+    void push(ll x)
+    {
+        s.push_back(x);
+        smin.push_back(min(smin.back(), x));
+        smax.push_back(max(smax.back(), x));
+    }
+    ll pop()
+    {
+        ll x = s.back();
+        s.pop_back();
+        smin.pop_back();
+        smax.pop_back();
+        return x;
+    }
+    bool empty()
+    {
+        return s.empty();
+    }
+    ll st_max()
+    {
+        return smax.back();
+    }
+    ll st_min()
+    {
+        return smin.back();
+    }
+};
+
+custom_stack s1, s2;
+ll k;
+
+void add(ll x)
+{
+    s2.push(x);
+}
+void remove()
+{
+    if (s1.empty())
+    {
+        while (!s2.empty())
+        {
+            s1.push(s2.pop());
+        }
+    }
+    s1.pop();
+}
+bool good()
+{
+    ll mn = min(s1.st_min(), s2.st_min());
+    ll mx = max(s1.st_max(), s2.st_max());
+    return mx - mn <= k;
+}
+/*---------------------------------TEMPLATE  ENDS --------------------------------------------------------------------------------------*/
+void solve()
+{
+    ll n;
+    cin >> n >> k;
+    vll v(n, 0);
+    rep(i, 0, n)
+    {
+        cin >> v[i];
+    }
+    ll l = 0;
+    ll ans = 0;
+    rep(r, 0, n)
+    {
+        add(v[r]);
+        while (!good())
+        {
+            remove();
+            l++;
+        }
+        ans += r - l + 1;
+    }
+    cout << ans << endl;
+
+    return;
+}
