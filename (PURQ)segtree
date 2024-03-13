@@ -1,6 +1,7 @@
 vector<node> segt;
 vll val;
 
+
 node merge(node &a, node &b)
 {
      // merge update
