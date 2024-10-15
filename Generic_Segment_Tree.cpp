@@ -1,5 +1,4 @@
-#include <bits/stdc++.h>
-using namespace std;
+
 
 template <typename Node, typename Update>
 struct SegTree
@@ -134,13 +133,3 @@ void solve()
     return;
 }
 
-int main()
-{
-    int t = 1;
-    // cin >> t;
-    while (t--)
-    {
-        solve();
-    }
-    return 0;
-}
